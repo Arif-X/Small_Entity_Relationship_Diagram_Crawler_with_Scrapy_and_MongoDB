@@ -65,10 +65,11 @@ ROBOTSTXT_OBEY = False
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    'quote.pipelines.Titles': 300,
     'quote.pipelines.sintaScorePipelines': 300,
     'quote.pipelines.scopusScorePipelines':300,
     'quote.pipelines.indexPipelines': 300,
-    'quote.pipelines.footerPipelines': 300,
+    'quote.pipelines.navPipelines': 300,
     'quote.pipelines.AllData': 300,
 }
 
