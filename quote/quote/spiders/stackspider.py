@@ -59,3 +59,4 @@ class StackSpider(Spider):
             item4['url'] = question.xpath(
                 'a[@class="hvr-grow"]/@href').extract()[0]
             yield item4
+            
