@@ -27,10 +27,10 @@ class scopusScore(Item):
     total = Field()
 
 
-class Footer(Item):
+class Nav(Item):
     title = Field()
     url = Field()
 
 
-
-
+class Title(Item):
+    title = Field()
