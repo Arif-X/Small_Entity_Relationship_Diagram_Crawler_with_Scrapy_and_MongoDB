@@ -1,7 +1,7 @@
 from scrapy import Spider
 from scrapy.selector import Selector
 
-from ..items import Index, sintaScore, scopusScore, jurnalData, Footer
+from ..items import Index, sintaScore, scopusScore, jurnalData, Title, Nav
 
 
 class StackSpider(Spider):
@@ -16,6 +16,12 @@ class StackSpider(Spider):
         question2 = Selector(response).xpath('//div[@class="uk-width-large-1-4 sinta-stat2"]')
         question3 = Selector(response).xpath('//div[@class="uk-width-large-1-4 scopus-stat2"]')
         question4 = Selector(response).xpath('//li[@class="rel-links"]')
+
+        item5 = Title()
+        item5['title'] = response.selector.xpath(
+            '//title[not(@*)]/text()').extract()[0]
+        yield item5
+
         for question in questions:
             item1 = jurnalData()
             item1['title'] = question.xpath(
@@ -47,11 +53,9 @@ class StackSpider(Spider):
             yield item3
 
         for question in question4:
-            item4 = Footer()
+            item4 = Nav()
             item4['title'] = question.xpath(
                 'a[@class="hvr-grow"]/text()').extract()[0]
             item4['url'] = question.xpath(
                 'a[@class="hvr-grow"]/@href').extract()[0]
             yield item4
-
-
