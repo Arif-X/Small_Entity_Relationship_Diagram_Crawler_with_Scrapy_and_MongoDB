@@ -13,15 +13,34 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 import pymongo
-from .items import sintaScore, scopusScore, Index, jurnalData, Footer
+from .items import sintaScore, scopusScore, Index, jurnalData, Nav, Title
 
 mapping = {
             scopusScore,
             sintaScore,
             Index,
-            Footer,
+            Title,
             jurnalData,
+            Nav,
         }
+
+
+class Titles(object):
+
+    def __init__(self):
+
+        self.conn = pymongo.MongoClient(
+            'localhost',
+            27017
+        )
+        db = self.conn['Sinta_Website_Data']
+        self.collection = db['Website']
+
+    def process_item(self, item, spider):
+        if not isinstance(item, Title):
+            return item
+        self.collection.insert(dict(item))
+
 
 
 class AllData(object):
@@ -49,7 +68,7 @@ class indexPipelines(object):
             27017
         )
         db = self.conn['Sinta_Website_Data']
-        self.collection = db['Index_Jurnal']
+        self.collection = db['Jurnal_Index']
 
     def process_item(self, item, spider):
         if not isinstance(item, Index):
@@ -89,7 +108,7 @@ class scopusScorePipelines(object):
         self.collection.insert(dict(item))
 
 
-class footerPipelines(object):
+class navPipelines(object):
 
     def __init__(self):
         self.conn = pymongo.MongoClient(
@@ -97,9 +116,10 @@ class footerPipelines(object):
             27017
         )
         db = self.conn['Sinta_Website_Data']
-        self.collection = db['Footer']
+        self.collection = db['Nav']
 
     def process_item(self, item, spider):
-        if not isinstance(item, Footer):
+        if not isinstance(item, Nav):
             return item
         self.collection.insert(dict(item))
+
